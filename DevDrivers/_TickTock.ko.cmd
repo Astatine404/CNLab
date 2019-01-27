@@ -1,0 +1,1 @@
+cmd_/home/cs16/c167257/Documents/CN-167257/DevDrivers/TickTock.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/cs16/c167257/Documents/CN-167257/DevDrivers/TickTock.ko /home/cs16/c167257/Documents/CN-167257/DevDrivers/TickTock.o /home/cs16/c167257/Documents/CN-167257/DevDrivers/TickTock.mod.o
