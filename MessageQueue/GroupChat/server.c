@@ -26,8 +26,8 @@ int main(){
 	msgid = msgget(key, 0666 | IPC_CREAT);
 
 	//connect phase
-	while(n<2){
-		msgrcv(msgid, &message, sizeof(message), 1, 0);
+	while(n<3){
+		msgrcv(msgid, &message, sizeof(message), 999, 0);
 		char currgrp[100], currclient[100];
 		int i = 0, flag=0, delim=0;
 		for(i=0; i<strlen(message.mesg_text); i++){
@@ -48,23 +48,37 @@ int main(){
 		grp[atoi(currgrp)][grpctr[atoi(currgrp)]++] = atoi(currclient);
 	}
 	
-	
-	while(1){
-		for(int i=0; i<2; i++){ //grp no
-			if(msgrcv(msgid, &message, sizeof(message), i, IPC_NOWAIT)>0){
-				printf("%s\n", message.mesg_text);
-				for(int j=0; j<grpctr[i]; j++){ //clients per grp
-					message.mesg_type = grp[i][j];
-					if(msgsnd(msgid, &message, sizeof(message), 0)<0)
-						printf("Error\n");
-					//printf("Sent to %d\n", client[i]);
-				}
-			}
+	printf("Grp list:\n");
+	for(int i=0; i<3; i++){
+		printf("%d:", i); 
+		for(int j=0; j<grpctr[i]; j++){
+			printf("%d ", grp[i][j]);
 		}
-		
+		printf("\n"); 
 	}
 	
+	
+	while(1){
+		int currgrp, i; char msg[100];
+		if(msgrcv(msgid, &message, sizeof(message), 1000, 0)>0){
+			printf("%s\n", message.mesg_text);
+			//process mesg (assume one digit grp no)
+			currgrp = (int)message.mesg_text[0] - (int)'0';
+			for(i=2; i<strlen(message.mesg_text); i++){
+				msg[i-2] = message.mesg_text[i];
+			}
+			msg[i-2] = '\0';
+			strcpy(message.mesg_text, msg);
+			for(int j=0; j<grpctr[currgrp]; j++){ //clients per grp
+				message.mesg_type = grp[currgrp][j];
+				if(msgsnd(msgid, &message, sizeof(message), 0)<0)
+					printf("Error\n");
+				//printf("Sent to %d\n", message.mesg_type);
+			}
+		}
+	}
 
+	
 	msgctl(msgid, IPC_RMID, NULL);
 	
 	

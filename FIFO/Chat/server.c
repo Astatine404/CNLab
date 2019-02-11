@@ -35,8 +35,8 @@ int main(){
 				printf("Server: Connect Error: %s\n", strerror(errno));
 			}
 			close(wfd);
+			printf("Client %d done\n", n);
 		}
-		printf("Client %d done\n", n);
 	}
 	close(rfd);
 	

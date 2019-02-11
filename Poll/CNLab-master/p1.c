@@ -36,7 +36,7 @@ int main(){
 		printf("i: %d\n", i);
 		if(pfds[0].revents & POLLIN)
 		{
-			printf("here\n");
+			printf("detected 0\n");
 			fgets(buf, 100, fd2);
 			if(pfds[4].revents & POLLOUT){
 				fputs(buf, fdw);
@@ -46,6 +46,7 @@ int main(){
 		}
 		else if(pfds[1].revents & POLLIN)
 		{
+			printf("detected 1\n");
 			fgets(buf, 100, fd3);
 			if(pfds[4].revents & POLLOUT){
 				fputs(buf, fdw);
@@ -55,6 +56,7 @@ int main(){
 		}
 		else if(pfds[2].revents & POLLIN)
 		{
+			printf("detected 2\n");
 			fgets(buf, 100, fd4);
 			if(pfds[4].revents & POLLOUT){
 				fputs(buf, fdw);
@@ -64,6 +66,7 @@ int main(){
 		}
 		else if(pfds[3].revents & POLLIN)
 		{
+			printf("detected 3\n");
 			fgets(buf, 100, fd5);
 			if(pfds[4].revents & POLLOUT){
 				fputs(buf, fdw);
@@ -72,14 +75,17 @@ int main(){
 	
 		}
 		
-		if(pfds[0].revents & POLLERR)
-			printf("POLLERR");
-		if(pfds[0].revents & POLLNVAL)
-			printf("POLLNVAL");
-		if(pfds[0].revents & POLLHUP)
-			printf("POLLHUP");
-		if(pfds[0].revents & POLLPRI)
-			printf("POLLPRI");
+		for(int i=0; i<4; i++){
+			printf("Poll no %d says %d\n", i, pfds[i].revents);
+			if(pfds[i].revents & POLLERR)
+				printf("POLLERR%d\n", i);
+			if(pfds[i].revents & POLLNVAL)
+				printf("POLLNVAL%d\n", i);
+			if(pfds[i].revents & POLLHUP)
+				printf("POLLHUP%d\n", i);
+			if(pfds[i].revents & POLLPRI)
+				printf("POLLPRI%d\n", i);
+		}
 	}
 	
 	//printf("P1 received from %s\n", buf);

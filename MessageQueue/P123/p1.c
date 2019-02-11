@@ -11,28 +11,24 @@ struct mesg_buffer {
 
 int main(){
 	key_t key;
-	int msgid, grp;
+	int msgid, me, to;
 	
 	key = ftok("/tmp/server", 65);
 	if(key<0)
 		printf("Key Error!\n");
 	
 	msgid = msgget(key, 0666 | IPC_CREAT);
-	printf("Enter grp no: "); scanf("%d", &grp);
-	message.mesg_type = 999; //connect type
-	//printf("here\n");
-	//connect
-	sprintf(message.mesg_text, "%d-%d", getpid(), grp); 
-	if(msgsnd(msgid, &message, sizeof(message), 0)<0)
-		printf("Connect Send Error\n");
-	printf("%s, connected!\n", message.mesg_text);
 	
+	printf("Who am I? ");
+	scanf("%d", &me);
+	
+	printf("To? ");
+	scanf("%d", &to);
+
 	if(fork()==0){
-		char msg[100];
 		while(1){
-			gets(msg);
-			sprintf(message.mesg_text, "%d-%s", grp, msg);
-			message.mesg_type = 1000; //client to server
+			gets(message.mesg_text);
+			message.mesg_type = to; //to p2
 	
 			if(msgsnd(msgid, &message, sizeof(message), 0)<0)
 				printf("Send Error\n");
@@ -40,11 +36,13 @@ int main(){
 	}
 	else{
 		while(1){
-			if(msgrcv(msgid, &message, sizeof(message), getpid(), 0)<0)
+			if(msgrcv(msgid, &message, sizeof(message), me, 0)<0) //from p3
 				printf("Receive Error\n");
 			printf("%s\n", message.mesg_text);
 		}
 	}
+	
+	msgctl(msgid, IPC_RMID, NULL);
 	
 	
 	return 0;
