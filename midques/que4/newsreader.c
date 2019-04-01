@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 	signal(SIGINT, ctrlC);
 	char buf[100], fifo_path[100]; int val;
 	sprintf(fifo_path, "%s%s", "/tmp/fifo", argv[1]);
-	int key = ftok("/tmp/msgq", 66);
+	int key = ftok("/tmp/msgq", 68);
 	int msg_id = msgget(key, 0666|IPC_CREAT);
 	if(msg_id<0)
 		printf("MsgQue failure\n");

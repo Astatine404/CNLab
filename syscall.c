@@ -1,3 +1,19 @@
+#include<stdio.h>
+#include<unistd.h>
+#include<fcntl.h>
+#include<sys/ipc.h>
+#include<sys/msg.h>
+#include<sys/types.h>
+#include<sys/stat.h>
+#include<sys/select.h>
+#include<string.h>
+#include<semaphore.h>
+#include<signal.h>
+#include<stdlib.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+
 
 int pp[2]
 pipe(pp)
@@ -56,3 +72,10 @@ socket()
 bind(sfd, &address, sizeof(address))
 listen(sfd, 3);
 nsfd = accept(sfd, &caddr, &caddrlen)
+
+sem_t *sem = sem_open("mysem1", O_CREAT, 0644, 1);
+sem_wait(sem);
+sem_post(sem);
+
+inet_ntoa(c_addr.sin_addr); 
+ntohs(c_addr.sin_port);
