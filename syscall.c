@@ -79,3 +79,46 @@ sem_post(sem);
 
 inet_ntoa(c_addr.sin_addr); 
 ntohs(c_addr.sin_port);
+
+
+struct sockaddr_un uaddr;
+usfd = socket(AF_UNIX, SOCK_STREAM, 0);
+uaddr.sun_family = AF_UNIX;
+strcpy(uaddr.sun_path, path);
+
+
+int rsfd=socket(AF_INET,SOCK_RAW,atoi(argv[1]));
+bind(rsfd, (struct sockaddr *)&servaddr,sizeof(servaddr));
+sendto(rsfd, buf, sizeof(buf), 0, (struct sockaddr_in *)&addr, sizeof(addr))
+setsockopt(rsfd, IPPROTO_IP, IP_HDRINCL, &optval, sizeof(int));
+
+iph->ihl = 5;
+iph->version = 4;
+iph->tos = 0;
+iph->tot_len = sizeof (struct iphdr) + sizeof (struct tcphdr) + strlen(data);
+iph->id = htonl (54321);	//random packet id
+iph->frag_off = 0;
+iph->ttl = 255;
+iph->protocol = IPPROTO_TCP;
+iph->check = 0;
+iph->saddr = inet_addr ( source_ip );	//Spoofed source IP
+iph->daddr = sin.sin_addr.s_addr;
+
+//Ip checksum
+iph->check = csum ((unsigned short *) datagram, iph->tot_len);
+
+//TCP Header
+tcph->source = htons (1234);
+tcph->dest = htons (8081);
+tcph->seq = 0;
+tcph->ack_seq = 0;
+tcph->doff = 5;	//tcp header size
+tcph->fin=0;
+tcph->syn=1;
+tcph->rst=0;
+tcph->psh=0;
+tcph->ack=0;
+tcph->urg=0;
+tcph->window = htons (5840);	/* maximum allowed window size */
+tcph->check = 0;
+tcph->urg_ptr = 0;
