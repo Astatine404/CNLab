@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/cs16/c167257/Documents/CN-167257/CNLab/pcap/gratuitousarp/garp.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+unistd.h
+-
+errno.h
+-
+sys/socket.h
+-
+sys/ioctl.h
+-
+linux/if_ether.h
+-
+linux/if_packet.h
+-
+netdb.h
+-
+arpa/inet.h
+-
+net/if.h
+-
+net/ethernet.h
+-
+garp.h
+/home/cs16/c167257/Documents/CN-167257/CNLab/pcap/gratuitousarp/garp.h
+garp_config.h
+/home/cs16/c167257/Documents/CN-167257/CNLab/pcap/gratuitousarp/garp_config.h
+
+/home/cs16/c167257/Documents/CN-167257/CNLab/pcap/gratuitousarp/garp.h
+
+garp_config.h
+

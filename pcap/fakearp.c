@@ -60,9 +60,9 @@ int main(int argc,const char* argv[]) {
         exit(1);
     }
 
-    struct sockaddr_in arp_addr_str;
-    arp_addr_str.sin_addr.s_addr = inet_addr(argv[3]);
-    memcpy(&req.arp_spa, &arp_addr_str.sin_addr.s_addr, sizeof(req.arp_spa));
+    struct sockaddr_in *arp_addr_str = malloc(sizeof(struct sockaddr_in));
+    arp_addr_str->sin_addr.s_addr = inet_addr(argv[3]);
+    memcpy(&req.arp_spa, &arp_addr_str->sin_addr.s_addr, sizeof(req.arp_spa));
 
     // Obtain the source MAC address, copy into Ethernet header and ARP request.
     if (ioctl(fd,SIOCGIFHWADDR,&ifr)==-1) {
@@ -76,8 +76,7 @@ int main(int argc,const char* argv[]) {
         close(fd);
         exit(1);
     }
-    //const unsigned char* source_mac_addr=(unsigned char*)ifr.ifr_hwaddr.sa_data;
-    const unsigned char* source_mac_addr = "e4:46:da:ff:6e:09";
+    const unsigned char* source_mac_addr=(unsigned char*)ifr.ifr_hwaddr.sa_data;
     memcpy(header.ether_shost,source_mac_addr,sizeof(header.ether_shost));
     memcpy(&req.arp_sha,source_mac_addr,sizeof(req.arp_sha));
     close(fd);

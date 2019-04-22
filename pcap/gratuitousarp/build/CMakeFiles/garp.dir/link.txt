@@ -1,0 +1,1 @@
+/usr/bin/cc  -std=gnu99   CMakeFiles/garp.dir/garp.c.o  -o garp -rdynamic 
