@@ -56,11 +56,12 @@ void* servicefunc(void* par){
 
 	while(1){
 		stat = recv(bck, buf, sizeof(buf), 0);
-		if(stat<=0){
+		/*if(stat<=0){
 			printf("Thread killed\n");
 			pthread_exit(0);
-		}
-		printf("strlen from main: %d\n", (int)strlen(buf));
+		}*/
+		if(stat>0)
+			printf("strlen from main: %d\n", (int)strlen(buf));
 	}
 }
 
@@ -77,7 +78,7 @@ int main(){
 
 	iaddr.sin_family = AF_INET;
 	iaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-	iaddr.sin_port = htons(8080);
+	iaddr.sin_port = htons(8081);
 
 	uaddr.sun_family = AF_UNIX;
 	strncpy(uaddr.sun_path, socket_path, sizeof(uaddr.sun_path)-1);

@@ -18,7 +18,7 @@ int main()
 
 	iaddr.sin_family = AF_INET;
 	iaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-	iaddr.sin_port = htons(8080);
+	iaddr.sin_port = htons(8081);
 
 	connect(sfd, (struct sockaddr *)&iaddr, sizeof(iaddr));
 	printf("Connected to server\n");
