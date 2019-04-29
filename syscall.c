@@ -49,7 +49,7 @@ msgsnd(msgid, &mesg, sizeof(mesg), 0)		   void* str = shmat(shmid, 0, 0)
 msgrcv(msgid, &mesg, sizeof(mesg), typeid, 0); shmdt(str);
 
 
-fd_set readfs;
+fd_set readfds;
 FD_ZERO(&readfds)
 FD_SET(fd, &readfds)
 select(max_fd+1, &readfds, NULL, NULL, NULL)
@@ -65,7 +65,7 @@ address.sin_port = htons(port);
 
 connect(sfd, &address, sizeof(address))
 send(sfd, buf, strlen(buf), 0);
-recv(sfd, &buf, 100, 0)
+recv(sfd, buf, 100, 0)
 
 //server
 socket()
